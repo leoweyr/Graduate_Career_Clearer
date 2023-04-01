@@ -25,17 +25,23 @@ class C_PythonFile:
 
 class C_AssertHandler:
     def __init__(self,pythonFile,expression,handleFunction = None,*handleFunctionParam):
+        #Synchronize symbols of executed python file
         sys.path.append(pythonFile.path)
         for symbol in pythonFile.symbols_normal:
             exec("from {} import {}".format(pythonFile.name,symbol))
+        #Assert and function handle
         try:
-            exec(expression)
+            self.__m_var = eval(expression)
         except:
             if handleFunction != None:
                 handleFunction(*handleFunctionParam)
             self.__m_result = False
+            self.__m_var = None
         else:
             self.__m_result = True
+    @property
+    def var(self):
+        return self.__m_var
 
     @property
     def result(self):
