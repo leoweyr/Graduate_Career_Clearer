@@ -44,8 +44,8 @@ class ExcelTableConverter(_Excel):
         return self
 
     def __next__(self):
-        if (self.__m_type == ExcelTableType.ROW_BASED and self.__m_forsearch_index >= self._info["max_row"]
-        ) or (self.__m_type == ExcelTableType.COL_BASED and self.__m_forsearch_index >= self._info["max_col"]):
+        if (self.__m_type == ExcelTableType.ROW_BASED and self.__m_forsearch_index > self._info["max_row"]
+        ) or (self.__m_type == ExcelTableType.COL_BASED and self.__m_forsearch_index > self._info["max_col"]):
             raise StopIteration
 
         value = self.get_data(self.__m_forsearch_index)
