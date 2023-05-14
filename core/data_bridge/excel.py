@@ -27,9 +27,15 @@ from .tag import DataLabels
 
 
 class ExcelTableConverter(_Excel):
-    def __init__(self, type: ExcelTableType, excel_file_path, excel_sheet):
+    def __init__(self, type: ExcelTableType, excel_file_path, excel_sheet, datum_position, data_labels: DataLabels):
         super().__init__(excel_file_path, excel_sheet)
         self.__m_type = type
+
+        self.__m_datum_position = datum_position
+        self.__m_data_labels = data_labels
+        datum_position_cells = self.__get_one(datum_position)
+        for label in data_labels:
+            label.serial_num = datum_position_cells.index(label.original)
 
     def __iter__(self):
         self.__m_forsearch_index = 1
@@ -57,15 +63,6 @@ class ExcelTableConverter(_Excel):
             for rows in self._m_sheet.iter_cols(min_col=position, max_col=position, values_only=True):
                 get_one.append(rows[0])
         return get_one
-
-    def set_datum(self, position, data_labels: DataLabels):
-        self.__m_datum_position = position
-        self.__m_data_labels = data_labels
-
-        datum_position = self.__get_one(position)
-
-        for label in data_labels:
-            label.serial_num = datum_position.index(label.original)
 
     def get_data(self, position):
         python_dict = {}
