@@ -4,8 +4,9 @@ from .tag import (
 
 
 from .excel import (
+    ExcelTableType,
     ExcelTableConverter
 )
 
 
-__all__ = ["DataLabels", "ExcelTableConverter"]
+__all__ = ["DataLabels", "ExcelTableType", "ExcelTableConverter"]
