@@ -3,13 +3,15 @@ from abc import ABCMeta, abstractmethod
 
 class Evaluable(metaclass=ABCMeta):
     @abstractmethod
-    def _judge(self, object: object) -> dict:
+    def _judge(self, object: object) -> dict[str, object]:
         pass
 
     @abstractmethod
-    def _conclude(self, **kwargs) -> None:
+    def _conclude(self, result: dict[str, object]) -> None:
         pass
 
-    @abstractmethod
     def evaluate(self, object: object) -> None:
-        pass
+        """
+        Non-overridable.
+        """
+        self._conclude(self._judge(object))
