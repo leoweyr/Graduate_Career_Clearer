@@ -1,7 +1,10 @@
-from src.data_model.DataModelable import DataModelable
-from src.data_model.DataIncompleteError import DataIncompleteError
-from src.data_model.Gender import Gender
-from src.data_model.Course import Course
+from typing import List
+
+from data_model.DataModelable import DataModelable
+from data_model.DataIncompleteError import DataIncompleteError
+from data_model.Gender import Gender
+from data_model.Major import Major
+from data_model.TakenCourse import TakenCourse
 
 
 class Graduate(DataModelable):
@@ -13,7 +16,7 @@ class Graduate(DataModelable):
         self.__grade: int = 0
         self.__class: str = ""
         self.__college: str = ""
-        self.__major: str = ""
+        self.__major: Major = None
 
         # Graduate career information
         self.__gpa: float = 0
@@ -21,7 +24,7 @@ class Graduate(DataModelable):
         self.__major_optional_credits: float = 0
         self.__limited_elective_credits: float = 0
         self.__optional_credits: float = 0
-        self.__courses: list[Course] = []
+        self.__courses: List[TakenCourse] = []
 
     def is_completed(self) -> bool:
         if self.__id == 0:
