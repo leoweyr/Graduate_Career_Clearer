@@ -1,11 +1,13 @@
 from typing import List, Dict, Any
 
 from data_model.DataModelable import DataModelable
+from data_storage.Storable import Storable
 from data_model.Course import Course
 from data_model.DataIncompleteError import DataIncompleteError
+from data_storage.DataNotIndexableError import DataNotIndexableError
 
 
-class Major(DataModelable):
+class Major(DataModelable, Storable):
     def __init__(self):
         # Metadata.
         self.__id: int = 0
@@ -17,6 +19,9 @@ class Major(DataModelable):
         self.__standard_limited_elective_credits: float = 0
         self.__standard_optional_credits: float = 0
         self.__standard_required_courses: List[Course] = []
+
+    def __str__(self) -> str:
+        return self.__name
 
     def is_completed(self) -> bool:
         if self.__id == 0:
@@ -48,4 +53,23 @@ class Major(DataModelable):
         }
 
         return data_structure
-    
+
+    def is_indexable(self) -> bool:
+        if self.__id == 0:
+            raise DataNotIndexableError(self, "id")
+        elif self.__name == "":
+            raise DataNotIndexableError(self, "name")
+        elif self.__edition == 0:
+            raise DataNotIndexableError(self, "edition")
+        else:
+            return True
+
+    def get_metadata(self) -> Dict[str: str]:
+        if self.is_indexable():
+            metadata: Dict[str: str] = {
+                "id": str(self.__id),
+                "name": str(self.__name),
+                "edition": str(self.__edition)
+            }
+
+            return metadata

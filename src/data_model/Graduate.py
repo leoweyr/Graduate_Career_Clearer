@@ -1,13 +1,15 @@
 from typing import List, Dict, Any
 
 from data_model.DataModelable import DataModelable
+from data_storage.Storable import Storable
 from data_model.Gender import Gender
 from data_model.Major import Major
 from data_model.TakenCourse import TakenCourse
 from data_model.DataIncompleteError import DataIncompleteError
+from data_storage.DataNotIndexableError import DataNotIndexableError
 
 
-class Graduate(DataModelable):
+class Graduate(DataModelable, Storable):
     def __init__(self):
         # Basic student information.
         self.__id: int = 0
@@ -73,3 +75,35 @@ class Graduate(DataModelable):
         }
 
         return data_structure
+
+    def is_indexable(self) -> bool:
+        if self.__id == 0:
+            raise DataNotIndexableError(self, "id")
+        elif self.__name == "":
+            raise DataNotIndexableError(self, "name")
+        elif self.__gender == Gender.UNKNOWN:
+            raise DataNotIndexableError(self, "gender")
+        elif self.__grade == 0:
+            raise DataNotIndexableError(self, "grade")
+        elif self.__class == "":
+            raise DataNotIndexableError(self, "class")
+        elif self.__college == "":
+            raise DataNotIndexableError(self, "college")
+        elif self.__major is None:
+            raise DataNotIndexableError(self, "major")
+        else:
+            return True
+
+    def get_metadata(self) -> Dict[str: str]:
+        if self.is_indexable():
+            metadata: Dict[str: str] = {
+                "id": str(self.__id),
+                "name": str(self.__name),
+                "gender": str(self.__gender),
+                "grade": str(self.__grade),
+                "class": str(self.__class),
+                "college": str(self.__college),
+                "major": str(self.__major)
+            }
+
+            return metadata
