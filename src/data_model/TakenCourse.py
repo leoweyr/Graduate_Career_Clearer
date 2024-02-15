@@ -1,3 +1,5 @@
+from typing import Dict
+
 from src.data_model.Course import Course
 from src.criterion.PointCriterion import PointCriterion
 from src.data_model.TakenCourseStatus import TakenCourseStatus
@@ -17,6 +19,15 @@ class TakenCourse(Course):
         elif super().is_completed():
             return True
 
+    def get_data(self) -> Dict[str: object]:
+        data_structure: Dict[str: object] = {
+            "points": self.__points
+        }
+
+        data_structure.update(super().get_data())
+
+        return data_structure
+
     def is_pass(self) -> bool:
         if self.__points == TakenCourseStatus.UNKNOWN:
             if self.is_complete():
@@ -31,7 +42,7 @@ class TakenCourse(Course):
         return self.__status
 
     @status.setter
-    def status(self, status: TakenCourseStatus):
+    def status(self, status: TakenCourseStatus) -> None:
         self.__status = status
 
     @property

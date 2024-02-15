@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from data_model.DataModelable import DataModelable
 from data_model.DataIncompleteError import DataIncompleteError
@@ -55,3 +55,21 @@ class Graduate(DataModelable):
             raise DataIncompleteError(self, "courses")
         else:
             return True
+
+    def get_data(self) -> Dict[str: object]:
+        data_structure: Dict[str: object] = {
+            "id": self.__id,
+            "name": self.__name,
+            "gender": self.__gender,
+            "class": self.__class,
+            "college": self.__college,
+            "major": self.__major,
+            "gpa": self.__gpa,
+            "required_credits": self.__required_credits,
+            "major_optional_credits": self.__major_optional_credits,
+            "limited_elective_credits": self.__limited_elective_credits,
+            "optional_credits": self.__optional_credits,
+            "courses": self.__courses
+        }
+
+        return data_structure

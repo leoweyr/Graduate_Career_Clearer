@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from data_model.DataModelable import DataModelable
 from data_model.Course import Course
@@ -35,3 +35,17 @@ class Major(DataModelable):
             raise DataIncompleteError(self, "standard required courses")
         else:
             return True
+
+    def get_data(self) -> Dict[str: object]:
+        data_structure: Dict[str: object] = {
+            "id": self.__id,
+            "name": self.__name,
+            "edition": self.__edition,
+            "standard_major_optional_credits": self.__standard_major_optional_credits,
+            "standard_limited_elective_credits": self.__standard_limited_elective_credits,
+            "standard_optional_credits": self.__standard_optional_credits,
+            "standard_required_courses": self.__standard_required_courses
+        }
+
+        return data_structure
+    
