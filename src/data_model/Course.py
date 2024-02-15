@@ -1,8 +1,8 @@
-from typing import Dict
+from typing import Dict, Any
 
-from src.data_model.DataIncompleteError import DataIncompleteError
 from src.data_model.DataModelable import DataModelable
 from src.data_model.CourseNature import CourseNature
+from src.data_model.DataIncompleteError import DataIncompleteError
 
 
 class Course(DataModelable):
@@ -24,8 +24,8 @@ class Course(DataModelable):
         else:
             return True
 
-    def get_data(self) -> Dict[str: object]:
-        data_structure: Dict[str: object] = {
+    def get_data(self) -> Dict[str: Any]:
+        data_structure: Dict[str: Any] = {
             "id": self._id,
             "name": self._name,
             "nature": self._nature,

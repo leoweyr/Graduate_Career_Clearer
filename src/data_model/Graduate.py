@@ -1,10 +1,10 @@
-from typing import List, Dict
+from typing import List, Dict, Any
 
 from data_model.DataModelable import DataModelable
-from data_model.DataIncompleteError import DataIncompleteError
 from data_model.Gender import Gender
 from data_model.Major import Major
 from data_model.TakenCourse import TakenCourse
+from data_model.DataIncompleteError import DataIncompleteError
 
 
 class Graduate(DataModelable):
@@ -56,8 +56,8 @@ class Graduate(DataModelable):
         else:
             return True
 
-    def get_data(self) -> Dict[str: object]:
-        data_structure: Dict[str: object] = {
+    def get_data(self) -> Dict[str: Any]:
+        data_structure: Dict[str: Any] = {
             "id": self.__id,
             "name": self.__name,
             "gender": self.__gender,

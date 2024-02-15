@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import Dict
+from typing import Dict, Any
 
 
 class DataModelable(metaclass=ABCMeta):
@@ -8,5 +8,5 @@ class DataModelable(metaclass=ABCMeta):
         pass
     
     @abstractmethod
-    def get_data(self) -> Dict[str: object]:
+    def get_data(self) -> Dict[str: Any]:
         pass

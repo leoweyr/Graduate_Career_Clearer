@@ -1,17 +1,18 @@
 from abc import ABCMeta, abstractmethod
+from typing import Any, Dict
 
 
 class Evaluable(metaclass=ABCMeta):
     @abstractmethod
-    def _judge(self, object: object) -> dict[str, object]:
+    def _judge(self, target: Any) -> Dict[str, Any]:
         pass
 
     @abstractmethod
-    def _conclude(self, result: dict[str, object]) -> None:
+    def _conclude(self, result: Dict[str, Any]) -> None:
         pass
 
-    def evaluate(self, object: object) -> None:
+    def evaluate(self, target: Any) -> None:
         """
         Non-overridable.
         """
-        self._conclude(self._judge(object))
+        self._conclude(self._judge(target))

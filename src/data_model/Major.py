@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Any
 
 from data_model.DataModelable import DataModelable
 from data_model.Course import Course
@@ -36,8 +36,8 @@ class Major(DataModelable):
         else:
             return True
 
-    def get_data(self) -> Dict[str: object]:
-        data_structure: Dict[str: object] = {
+    def get_data(self) -> Dict[str: Any]:
+        data_structure: Dict[str: Any] = {
             "id": self.__id,
             "name": self.__name,
             "edition": self.__edition,
