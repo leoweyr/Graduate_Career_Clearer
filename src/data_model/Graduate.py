@@ -58,8 +58,8 @@ class Graduate(DataModelable, Storable):
         else:
             return True
 
-    def get_data(self) -> Dict[str: Any]:
-        data_structure: Dict[str: Any] = {
+    def get_data(self) -> Dict[str, Any]:
+        data_structure: Dict[str, Any] = {
             "id": self.__id,
             "name": self.__name,
             "gender": self.__gender,
@@ -94,9 +94,9 @@ class Graduate(DataModelable, Storable):
         else:
             return True
 
-    def get_metadata(self) -> Dict[str: str]:
+    def get_metadata(self) -> Dict[str, str]:
         if self.is_indexable():
-            metadata: Dict[str: str] = {
+            metadata: Dict[str, str] = {
                 "id": str(self.__id),
                 "name": str(self.__name),
                 "gender": str(self.__gender),

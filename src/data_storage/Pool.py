@@ -11,19 +11,19 @@ class Pool(metaclass=ABCMeta, SingletonMeta):
         pass
 
     @abstractmethod
-    def get_data(self, condition: Dict[str: Any] = None) -> List[DataModelable]:
+    def get_data(self, condition: Dict[str, Any] = None) -> List[DataModelable]:
         pass
 
     @abstractmethod
-    def remove_data(self, condition: Dict[str: Any] = None) -> None:
+    def remove_data(self, condition: Dict[str, Any] = None) -> None:
         pass
 
-    def _find_data(self, data_pool: List[DataModelable], condition: Dict[str: Any]) -> Dict[int: DataModelable]:
+    def _find_data(self, data_pool: List[DataModelable], condition: Dict[str, Any]) -> Dict[int, DataModelable]:
         index: int = 0
         search_results: Dict[int, DataModelable] = {}
 
         for data in data_pool:
-            structured_data: Dict[str: Any] = data.get_data()
+            structured_data: Dict[str, Any] = data.get_data()
             matched: bool = True
 
             for key, value in condition.items():

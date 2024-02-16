@@ -26,8 +26,8 @@ class Course(DataModelable, Storable):
         else:
             return True
 
-    def get_data(self) -> Dict[str: Any]:
-        data_structure: Dict[str: Any] = {
+    def get_data(self) -> Dict[str, Any]:
+        data_structure: Dict[str, Any] = {
             "id": self._id,
             "name": self._name,
             "nature": self._nature,
@@ -48,9 +48,9 @@ class Course(DataModelable, Storable):
         else:
             return True
 
-    def get_metadata(self) -> Dict[str: str]:
+    def get_metadata(self) -> Dict[str, str]:
         if self.is_indexable():
-            metadata: Dict[str: str] = {
+            metadata: Dict[str, str] = {
                 "id": str(self._id),
                 "name": str(self._name),
                 "nature": str(self._nature),

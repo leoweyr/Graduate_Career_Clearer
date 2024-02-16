@@ -19,8 +19,8 @@ class TakenCourse(Course):
         elif super().is_completed():
             return True
 
-    def get_data(self) -> Dict[str: Any]:
-        data_structure: Dict[str: Any] = {
+    def get_data(self) -> Dict[str, Any]:
+        data_structure: Dict[str, Any] = {
             "points": self.__points
         }
 

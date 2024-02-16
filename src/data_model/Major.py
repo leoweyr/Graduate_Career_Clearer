@@ -41,8 +41,8 @@ class Major(DataModelable, Storable):
         else:
             return True
 
-    def get_data(self) -> Dict[str: Any]:
-        data_structure: Dict[str: Any] = {
+    def get_data(self) -> Dict[str, Any]:
+        data_structure: Dict[str, Any] = {
             "id": self.__id,
             "name": self.__name,
             "edition": self.__edition,
@@ -64,9 +64,9 @@ class Major(DataModelable, Storable):
         else:
             return True
 
-    def get_metadata(self) -> Dict[str: str]:
+    def get_metadata(self) -> Dict[str, str]:
         if self.is_indexable():
-            metadata: Dict[str: str] = {
+            metadata: Dict[str, str] = {
                 "id": str(self.__id),
                 "name": str(self.__name),
                 "edition": str(self.__edition)

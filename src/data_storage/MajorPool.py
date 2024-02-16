@@ -12,12 +12,12 @@ class MajorPool(Pool):
     def add_data(self, data: DataModelable) -> None:
         self.__majors.append(data)
 
-    def get_data(self, condition: Dict[str: Any] = None) -> List[DataModelable]:
+    def get_data(self, condition: Dict[str, Any] = None) -> List[DataModelable]:
         search_results: Dict[int, DataModelable] = dict(self._find_data(self.__majors, condition))
 
         return list(search_results.values())
 
-    def remove_data(self, condition: Dict[str: Any] = None) -> None:
+    def remove_data(self, condition: Dict[str, Any] = None) -> None:
         search_results: Dict[int, DataModelable] = dict(self._find_data(self.__majors, condition))
 
         for index in search_results.keys():

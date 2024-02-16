@@ -8,5 +8,5 @@ class Storable(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_metadata(self) -> Dict[str: str]:
+    def get_metadata(self) -> Dict[str, str]:
         pass

@@ -6,7 +6,7 @@ from src.data_model.TakenCourseStatus import TakenCourseStatus
 
 
 class PointCriterion(Evaluable):
-    def _judge(self, target: TakenCourse) -> Dict[str: Any]:
+    def _judge(self, target: TakenCourse) -> Dict[str, Any]:
         """
         According to the principle of strict control, priority is given to judging the passing situation to avoid
         misjudgment as failing due to errors in the original data format.
@@ -25,7 +25,7 @@ class PointCriterion(Evaluable):
                 return dict({"target": target, "is_pass": True})
         return dict({"target": target, "is_pass": False})
 
-    def _conclude(self, result: Dict[str: Any]) -> None:
+    def _conclude(self, result: Dict[str, Any]) -> None:
         evaluated_target: TakenCourse = result["target"]
         if bool(result["is_pass"]):
             evaluated_target.status = TakenCourseStatus.PASSED

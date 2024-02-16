@@ -8,5 +8,5 @@ class DataModelable(metaclass=ABCMeta):
         pass
     
     @abstractmethod
-    def get_data(self) -> Dict[str: Any]:
+    def get_data(self) -> Dict[str, Any]:
         pass
