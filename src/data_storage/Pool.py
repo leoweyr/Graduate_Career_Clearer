@@ -1,11 +1,13 @@
 from abc import ABCMeta, abstractmethod
 from typing import Dict, Any, List
+from abc import abstractmethod
 
 from data_storage.SingletonMeta import SingletonMeta
 from data_model.DataModelable import DataModelable
+from data_storage.ABCAndSingletonMeta import ABCAndSingletonMeta
 
 
-class Pool(metaclass=ABCMeta, SingletonMeta):
+class Pool(metaclass=ABCAndSingletonMeta):
     @abstractmethod
     def add_data(self, data: DataModelable) -> None:
         pass
