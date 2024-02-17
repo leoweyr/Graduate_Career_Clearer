@@ -1,31 +1,29 @@
-from abc import ABCMeta, abstractmethod
-from typing import Dict, Any, List
 from abc import abstractmethod
+from typing import Dict, List
 
-from data_storage.SingletonMeta import SingletonMeta
-from data_model.DataModelable import DataModelable
 from data_storage.ABCAndSingletonMeta import ABCAndSingletonMeta
+from data_storage.Storable import Storable
 
 
 class Pool(metaclass=ABCAndSingletonMeta):
     @abstractmethod
-    def add_data(self, data: DataModelable) -> None:
+    def add_data(self, data: Storable) -> None:
         pass
 
     @abstractmethod
-    def get_data(self, condition: Dict[str, Any] = None) -> List[DataModelable]:
+    def get_data(self, condition: Dict[str, str] = None) -> List[Storable]:
         pass
 
     @abstractmethod
-    def remove_data(self, condition: Dict[str, Any] = None) -> None:
+    def remove_data(self, condition: Dict[str, str] = None) -> None:
         pass
 
-    def _find_data(self, data_pool: List[DataModelable], condition: Dict[str, Any]) -> Dict[int, DataModelable]:
+    def _find_data(self, data_pool: List[Storable], condition: Dict[str, str]) -> Dict[int, Storable]:
         index: int = 0
-        search_results: Dict[int, DataModelable] = {}
+        search_results: Dict[int, Storable] = {}
 
         for data in data_pool:
-            structured_data: Dict[str, Any] = data.get_data()
+            structured_data: Dict[str, str] = data.get_metadata()
             matched: bool = True
 
             for key, value in condition.items():
