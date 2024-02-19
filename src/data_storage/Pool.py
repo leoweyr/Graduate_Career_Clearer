@@ -27,10 +27,11 @@ class Pool(metaclass=ABCAndSingletonMeta):
             structured_data: Dict[str, str] = data.get_metadata()
             matched: bool = True
 
-            for key, value in condition.items():
-                if key not in structured_data or structured_data[key] != value:
-                    matched = False
-                    break
+            if condition is not None:
+                for key, value in condition.items():
+                    if key not in structured_data or structured_data[key] != value:
+                        matched = False
+                        break
 
             if matched or condition is None:
                 search_results[index] = data
