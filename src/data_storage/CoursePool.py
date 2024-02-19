@@ -1,13 +1,25 @@
-from typing import List, Dict
+from typing import Optional, Dict, List
+from types import TracebackType
 
 from data_storage.Pool import Pool
+from data_storage.Databaseable import Databaseable
 from data_storage.DataContainer import DataContainer
 from data_storage.Storable import Storable
 
 
 class CoursePool(Pool):
-    def __init__(self):
-        self.__courses: DataContainer = None
+    def __init__(self, database: Databaseable):
+        self.__database: Databaseable = database
+        self.__courses: DataContainer = database.pull()
+
+    def __enter__(self) -> 'CoursePool':
+        return self
+
+    def __exit__(self,
+                 exc_type: Optional['BaseException'],
+                 exc_val: Optional[BaseException],
+                 exc_tb: Optional[TracebackType]) -> None:
+        self.__database.push(self.__courses)
 
     def add_data(self, data: Storable) -> None:
         if data.is_indexable() and len(self._find_data(self.__courses, data.get_metadata())) == 0:
