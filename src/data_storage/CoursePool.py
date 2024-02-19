@@ -1,13 +1,13 @@
 from typing import List, Dict
 
 from data_storage.Pool import Pool
-from data_model.Course import Course
+from data_storage.DataContainer import DataContainer
 from data_storage.Storable import Storable
 
 
 class CoursePool(Pool):
     def __init__(self):
-        self.__courses: List[Course] = []
+        self.__courses: DataContainer = None
 
     def add_data(self, data: Storable) -> None:
         if data.is_indexable() and len(self._find_data(self.__courses, data.get_metadata())) == 0:

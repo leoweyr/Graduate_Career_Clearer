@@ -3,6 +3,7 @@ from typing import Dict, List
 
 from data_storage.ABCAndSingletonMeta import ABCAndSingletonMeta
 from data_storage.Storable import Storable
+from data_storage.DataContainer import DataContainer
 
 
 class Pool(metaclass=ABCAndSingletonMeta):
@@ -18,7 +19,7 @@ class Pool(metaclass=ABCAndSingletonMeta):
     def remove_data(self, condition: Dict[str, str] = None) -> None:
         pass
 
-    def _find_data(self, data_pool: List[Storable], condition: Dict[str, str]) -> Dict[int, Storable]:
+    def _find_data(self, data_pool: DataContainer, condition: Dict[str, str]) -> Dict[int, Storable]:
         index: int = 0
         search_results: Dict[int, Storable] = {}
 
