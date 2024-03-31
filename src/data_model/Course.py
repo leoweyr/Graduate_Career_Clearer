@@ -2,11 +2,11 @@ from functools import singledispatchmethod
 from typing import Dict, Any, List
 
 from pure_object_oriented.NoInheritMeta import NoInheritMeta
-from src.data_model.CourseNature import CourseNature
-from src.data_model.DataModelable import DataModelable
+from data_model.CourseNature import CourseNature
+from data_model.DataModelable import DataModelable
 from data_model.TypeCastingError import TypeCastingError
 from data_storage.Storable import Storable
-from src.data_model.DataIncompleteError import DataIncompleteError
+from data_model.DataIncompleteError import DataIncompleteError
 from data_storage.DataNotIndexableError import DataNotIndexableError
 
 

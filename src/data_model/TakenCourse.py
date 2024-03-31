@@ -1,9 +1,9 @@
 from typing import Dict, Any
 
-from src.data_model.Course import Course
-from src.criterion.PointCriterion import PointCriterion
-from src.data_model.TakenCourseStatus import TakenCourseStatus
-from src.data_model.DataIncompleteError import DataIncompleteError
+from data_model.Course import Course
+from criterion.PointCriterion import PointCriterion
+from data_model.TakenCourseStatus import TakenCourseStatus
+from data_model.DataIncompleteError import DataIncompleteError
 
 
 class TakenCourse(Course):

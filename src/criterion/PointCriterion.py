@@ -1,8 +1,8 @@
 from typing import Dict, Any
 
-from src.criterion import Evaluable
-from src.data_model.TakenCourse import TakenCourse
-from src.data_model.TakenCourseStatus import TakenCourseStatus
+from criterion import Evaluable
+from data_model.TakenCourse import TakenCourse
+from data_model.TakenCourseStatus import TakenCourseStatus
 
 
 class PointCriterion(Evaluable):
