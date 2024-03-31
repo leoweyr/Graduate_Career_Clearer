@@ -5,6 +5,7 @@ from data_storage.Pool import Pool
 from data_storage.Databaseable import Databaseable
 from data_storage.DataContainer import DataContainer
 from data_storage.Storable import Storable
+from data_model.Course import Course
 
 
 class CoursePool(Pool):
@@ -25,10 +26,14 @@ class CoursePool(Pool):
         if data.is_indexable() and len(self._find_data(self.__courses, data.get_metadata())) == 0:
             self.__courses.append(data)
 
-    def get_data(self, condition: Dict[str, str] = None) -> List[Storable]:
+    def get_data(self, condition: Dict[str, str] = None) -> List[Course]:
         search_results: Dict[int, Storable] = dict(self._find_data(self.__courses, condition))
+        data: List[Course] = []
 
-        return list(search_results.values())
+        for search_result_data in search_results.values():
+            data.append(Course(search_result_data))
+
+        return data
 
     def remove_data(self, condition: Dict[str, str] = None) -> None:
         search_results: Dict[int, Storable] = dict(self._find_data(self.__courses, condition))
