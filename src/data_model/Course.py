@@ -10,41 +10,41 @@ from pure_object_oriented.NoInheritMeta import NoInheritMeta
 
 class Course(DataModelable, Storable):
     def __init__(self, builder: 'Course.Builder'):
-        self._id: str = builder.outer_class_get_id()
-        self._name: str = builder.outer_class_get_name()
-        self._nature: CourseNature = builder.outer_class_get_nature()
-        self._supplier: str = builder.outer_class_get_supplier()
+        self.__id: str = builder.outer_class_get_id()
+        self.__name: str = builder.outer_class_get_name()
+        self.__nature: CourseNature = builder.outer_class_get_nature()
+        self.__supplier: str = builder.outer_class_get_supplier()
 
     def is_completed(self) -> bool:
-        if self._id == "":
+        if self.__id == "":
             raise DataIncompleteError(self, "id")
-        elif self._name == "":
+        elif self.__name == "":
             raise DataIncompleteError(self, "name")
-        elif self._nature == CourseNature.UNKNOW:
+        elif self.__nature == CourseNature.UNKNOW:
             raise DataIncompleteError(self, "nature")
-        elif self._supplier == "":
+        elif self.__supplier == "":
             raise DataIncompleteError(self, "supplier")
         else:
             return True
 
     def get_data(self) -> Dict[str, Any]:
         data_structure: Dict[str, Any] = {
-            "id": self._id,
-            "name": self._name,
-            "nature": self._nature,
-            "supplier": self._supplier
+            "id": self.__id,
+            "name": self.__name,
+            "nature": self.__nature,
+            "supplier": self.__supplier
         }
 
         return data_structure
 
     def is_indexable(self) -> bool:
-        if self._id == "":
+        if self.__id == "":
             raise DataNotIndexableError(self, "id")
-        elif self._name == "":
+        elif self.__name == "":
             raise DataNotIndexableError(self, "name")
-        elif self._nature == CourseNature.UNKNOW:
+        elif self.__nature == CourseNature.UNKNOW:
             raise DataNotIndexableError(self, "nature")
-        elif self._supplier == "":
+        elif self.__supplier == "":
             raise DataNotIndexableError(self, "supplier")
         else:
             return True
@@ -52,10 +52,10 @@ class Course(DataModelable, Storable):
     def get_metadata(self) -> Dict[str, str]:
         if self.is_indexable():
             metadata: Dict[str, str] = {
-                "id": str(self._id),
-                "name": str(self._name),
-                "nature": str(self._nature),
-                "supplier": str(self._supplier)
+                "id": str(self.__id),
+                "name": str(self.__name),
+                "nature": str(self.__nature),
+                "supplier": str(self.__supplier)
             }
 
             return metadata
