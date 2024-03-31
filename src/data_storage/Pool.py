@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import Dict, List
 
-from data_storage.ABCAndSingletonMeta import ABCAndSingletonMeta
+from pure_object_oriented.ABCAndSingletonMeta import ABCAndSingletonMeta
 from data_storage.Storable import Storable
 from data_storage.DataContainer import DataContainer
 
