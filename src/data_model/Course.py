@@ -20,6 +20,7 @@ class CourseBuilder(metaclass=NoInheritMeta):
         self.__name: str = ""
         self.__nature: CourseNature = CourseNature.UNKNOW
         self.__supplier: str = ""
+        self.__terms: int = 0
 
     def id(self, id: str) -> 'CourseBuilder':
         self.__id = id
@@ -35,6 +36,10 @@ class CourseBuilder(metaclass=NoInheritMeta):
 
     def supplier(self, supplier: str) -> 'CourseBuilder':
         self.__supplier = supplier
+        return self
+
+    def terms(self, terms: int = 1) -> 'CourseBuilder':
+        self.__terms = terms
         return self
 
     def build(self) -> 'Course':
@@ -68,6 +73,13 @@ class CourseBuilder(metaclass=NoInheritMeta):
         """
         return self.__supplier
 
+    def outer_class_get_terms(self) -> int:
+        """
+        Due to Python's lack of support for outer class accessing private members of inner class, this method is
+        specifically designed to address this issue. Furthermore, it cannot be invoked externally.
+        """
+        return self.__terms
+
 
 class Course(DataModelable, Storable):
     @singledispatchmethod
@@ -80,12 +92,13 @@ class Course(DataModelable, Storable):
         self.__name: str = builder.outer_class_get_name()
         self.__nature: CourseNature = builder.outer_class_get_nature()
         self.__supplier: str = builder.outer_class_get_supplier()
+        self.__terms: int = builder.outer_class_get_terms()
 
     @__init__.register(DataModelable)
     def _(self, converted_object: DataModelable):
         converted_object_data: Dict[str, Any] = converted_object.get_data()
         converted_object_data_keys: List[str] = list(converted_object_data.keys())
-        this_object_data_keys: List[str] = ["id", "name", "nature", "supplier"]
+        this_object_data_keys: List[str] = ["id", "name", "nature", "supplier", "terms"]
 
         if converted_object_data_keys != this_object_data_keys:
             raise TypeCastingError(converted_object, Course)
@@ -94,11 +107,12 @@ class Course(DataModelable, Storable):
             self.__name: str = converted_object_data["name"]
             self.__nature: CourseNature = converted_object_data["nature"]
             self.__supplier: str = converted_object_data["supplier"]
+            self.__terms: int = converted_object_data["terms"]
 
     @__init__.register(Storable)
     def _(self, converted_object: Storable):
         converted_object_data_keys: List[str] = dir(converted_object)
-        this_object_data_keys: List[str] = ["_Course__id", "_Course__name", "_Course__nature", "_Course__supplier"]
+        this_object_data_keys: List[str] = ["_Course__id", "_Course__name", "_Course__nature", "_Course__supplier", "_Course__terms"]
 
         if not set(this_object_data_keys).issubset(set(converted_object_data_keys)):
             raise TypeCastingError(converted_object, Course)
@@ -107,6 +121,7 @@ class Course(DataModelable, Storable):
             self.__name: str = getattr(converted_object, "_Course__name")
             self.__nature: CourseNature = getattr(converted_object, "_Course__nature")
             self.__supplier: str = getattr(converted_object, "_Course__supplier")
+            self.__terms: int = getattr(converted_object, "_Course__terms")
 
     def is_completed(self) -> bool:
         if self.__id == "":
@@ -117,6 +132,8 @@ class Course(DataModelable, Storable):
             raise DataIncompleteError(self, "nature")
         elif self.__supplier == "":
             raise DataIncompleteError(self, "supplier")
+        elif self.__terms == 0:
+            raise DataIncompleteError(self, "terms")
         else:
             return True
 
@@ -125,7 +142,8 @@ class Course(DataModelable, Storable):
             "id": self.__id,
             "name": self.__name,
             "nature": self.__nature,
-            "supplier": self.__supplier
+            "supplier": self.__supplier,
+            "terms": self.__terms
         }
 
         return data_structure

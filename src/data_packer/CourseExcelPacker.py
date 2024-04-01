@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Dict, List
 import re
 
 from assembly_line.Executable import Executable
@@ -62,6 +62,29 @@ class CourseExcelPacker(Executable):
         raw_data_supplier: str = raw_data[3]
         course_builder.supplier(raw_data_supplier)
 
+        # Process terms in raw data.
+        peeled_data_terms: int = -1
+        if "x" in raw_data_id:
+            peeled_data_terms = int(raw_data_id.split("x")[1])
+        elif "X" in raw_data_id:
+            peeled_data_terms = int(raw_data_id.split("X")[1])
+        elif "f" in raw_data_id:
+            peeled_data_terms = int(raw_data_id.split("f")[1])
+        else:
+            peeled_data_terms = 1
+
+        if peeled_data_terms == 0:
+            peeled_data_terms = 1
+
+        course_builder.terms(peeled_data_terms)
+
         # Add course object to the course pool.
         course: Course = course_builder.build()
+        course_meta_data: Dict[str, str] = course.get_metadata()
+        existing_same_courses_in_course_pool: List[Course] = self.__course_pool.get_data(course_meta_data)
+
+        if existing_same_courses_in_course_pool:
+            if int(course.get_data()["terms"]) > int(existing_same_courses_in_course_pool[0].get_data()["terms"]):
+                self.__course_pool.remove_data(course_meta_data)
+
         self.__course_pool.add_data(course)
