@@ -53,7 +53,7 @@ class CourseExcelPacker(Executable):
             course_nature = CourseNature.OPTIONAL
         elif raw_data_nature == "限选":
             course_nature = CourseNature.LIMITED_ELECTIVE
-        elif raw_data_nature == "'专业任选":
+        elif raw_data_nature == "专业任选":
             course_nature = CourseNature.MAJOR_OPTIONAL
 
         course_builder.nature(course_nature)
