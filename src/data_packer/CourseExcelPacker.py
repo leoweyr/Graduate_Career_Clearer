@@ -29,7 +29,7 @@ class CourseExcelPacker(Executable):
         id_peeling_pattern: str = r'(.*?)(?:x|X|f|$)'
         raw_data_id: str = raw_data[0]
         peeled_data_id: str = re.search(id_peeling_pattern, raw_data_id).group(1)
-        course_builder.id(peeled_data_id)
+        course_builder.id_(peeled_data_id)
 
         # Process name in raw data.
         name_peeling_pattern: str = r'^(.*?)(?:\d+|(x|I|II|III).*)$'

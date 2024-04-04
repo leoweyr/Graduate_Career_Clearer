@@ -87,8 +87,8 @@ class Course(DataModelable, Storable):
             self.__supplier: str = ""
             self.__terms: int = 0
 
-        def id(self, id: str) -> 'Course.Builder':
-            self.__id = id
+        def id_(self, id_: str) -> 'Course.Builder':
+            self.__id = id_
             return self
 
         def name(self, name: str) -> 'Course.Builder':
