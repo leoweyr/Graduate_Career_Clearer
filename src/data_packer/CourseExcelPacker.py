@@ -3,16 +3,15 @@ import re
 
 from assembly_line.Executable import Executable
 from data_packer.Excel import Excel
-from data_storage.CoursePool import CoursePool
-from data_model.Course import Course, CourseBuilder
+from data_model.Course import CourseBuilder, Course
 from data_packer.DataType import DataType
 from data_model.CourseNature import CourseNature
+from data_storage.CoursePool import CoursePool
 
 
 class CourseExcelPacker(Executable):
-    def __init__(self, excel: Excel, course_pool: CoursePool, data_index: int):
+    def __init__(self, excel: Excel, data_index: int):
         self.__excel: Excel = excel
-        self.__course_pool: CoursePool = course_pool
         self.__data_index: int = data_index
 
     def execute(self) -> None:
@@ -81,10 +80,10 @@ class CourseExcelPacker(Executable):
         # Add course object to the course pool.
         course: Course = course_builder.build()
         course_meta_data: Dict[str, str] = course.get_metadata()
-        existing_same_courses_in_course_pool: List[Course] = self.__course_pool.get_data(course_meta_data)
+        existing_same_courses_in_course_pool: List[Course] = CoursePool().get_data(course_meta_data)
 
         if existing_same_courses_in_course_pool:
             if int(course.get_data()["terms"]) > int(existing_same_courses_in_course_pool[0].get_data()["terms"]):
-                self.__course_pool.remove_data(course_meta_data)
+                CoursePool().remove_data(course_meta_data)
 
-        self.__course_pool.add_data(course)
+        CoursePool().add_data(course)
