@@ -3,7 +3,7 @@ import re
 
 from assembly_line.Executable import Executable
 from data_packer.Excel import Excel
-from data_model.Course import CourseBuilder, Course
+from data_model.Course import Course
 from data_packer.DataType import DataType
 from data_model.CourseNature import CourseNature
 from data_storage.CoursePool import CoursePool
@@ -15,7 +15,7 @@ class CourseExcelPacker(Executable):
         self.__data_index: int = data_index
 
     def execute(self) -> None:
-        course_builder: CourseBuilder = CourseBuilder()
+        course_builder: Course.Builder = Course.Builder()
 
         # Get the raw data.
         raw_data: Tuple[str, ...] = self.__excel.get_row_data(self.__data_index, {
