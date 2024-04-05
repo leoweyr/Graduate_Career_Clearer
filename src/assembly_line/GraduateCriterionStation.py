@@ -3,7 +3,7 @@ from criterion.Evaluable import Evaluable
 from data_model.Graduate import Graduate
 
 
-class GraduateCriterionSation(Executable):
+class GraduateCriterionStation(Executable):
     def __init__(self):
         self.__criterion: Evaluable = None
         self.__graduate: Graduate = None
