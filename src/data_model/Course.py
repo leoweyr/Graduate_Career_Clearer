@@ -36,7 +36,7 @@ class Course(DataModelable, Storable):
             raise DataIncompleteError(self, "id")
         elif self.__name == "":
             raise DataIncompleteError(self, "name")
-        elif self.__nature == CourseNature.UNKNOW:
+        elif self.__nature == CourseNature.UNKNOWN:
             raise DataIncompleteError(self, "nature")
         elif self.__supplier == "":
             raise DataIncompleteError(self, "supplier")
@@ -61,7 +61,7 @@ class Course(DataModelable, Storable):
             raise DataNotIndexableError(self, "id")
         elif self.__name == "":
             raise DataNotIndexableError(self, "name")
-        elif self.__nature == CourseNature.UNKNOW:
+        elif self.__nature == CourseNature.UNKNOWN:
             raise DataNotIndexableError(self, "nature")
         elif self.__supplier == "":
             raise DataNotIndexableError(self, "supplier")
@@ -83,7 +83,7 @@ class Course(DataModelable, Storable):
         def __init__(self):
             self.__id: str = ""
             self.__name: str = ""
-            self.__nature: CourseNature = CourseNature.UNKNOW
+            self.__nature: CourseNature = CourseNature.UNKNOWN
             self.__supplier: str = ""
             self.__terms: int = 0
 

@@ -44,7 +44,7 @@ class CourseExcelPacker(Executable):
 
         # Process course nature in raw data.
         raw_data_nature: str = raw_data[2]
-        course_nature: CourseNature = CourseNature.UNKNOW
+        course_nature: CourseNature = CourseNature.UNKNOWN
 
         if raw_data_nature == "必修":
             course_nature = CourseNature.REQUIRED
