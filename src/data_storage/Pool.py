@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Dict, List
+from typing import Optional, Union, Dict, List
 
 from pure_object_oriented.ABCAndSingletonMeta import ABCAndSingletonMeta
 from data_storage.Storable import Storable
@@ -12,11 +12,11 @@ class Pool(metaclass=ABCAndSingletonMeta):
         pass
 
     @abstractmethod
-    def get_data(self, condition: Dict[str, str] = None) -> List[Storable]:
+    def get_data(self, condition: Optional[Union[Dict[str, str], None]] = None) -> List[Storable]:
         pass
 
     @abstractmethod
-    def remove_data(self, condition: Dict[str, str] = None) -> None:
+    def remove_data(self, condition: Optional[Union[Dict[str, str], None]] = None) -> None:
         pass
 
     def _find_data(self, data_pool: DataContainer, condition: Dict[str, str]) -> Dict[int, Storable]:

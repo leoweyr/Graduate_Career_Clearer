@@ -1,4 +1,4 @@
-from typing import Optional, Dict, List
+from typing import Optional, Union, Dict, List
 from types import TracebackType
 
 from data_storage.Pool import Pool
@@ -26,7 +26,7 @@ class CoursePool(Pool):
         if data.is_indexable() and len(self._find_data(self.__courses, data.get_metadata())) == 0:
             self.__courses.append(data)
 
-    def get_data(self, condition: Dict[str, str] = None) -> List[Course]:
+    def get_data(self, condition: Optional[Union[Dict[str, str], None]] = None) -> List[Course]:
         search_results: Dict[int, Storable] = dict(self._find_data(self.__courses, condition))
         data: List[Course] = []
 
@@ -35,7 +35,7 @@ class CoursePool(Pool):
 
         return data
 
-    def remove_data(self, condition: Dict[str, str] = None) -> None:
+    def remove_data(self, condition: Optional[Union[Dict[str, str], None]] = None) -> None:
         search_results: Dict[int, Storable] = dict(self._find_data(self.__courses, condition))
 
         for index in search_results.keys():

@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import Union, List, Dict, Any
 
 from data_model.DataModelable import DataModelable
 from data_storage.Storable import Storable
@@ -18,7 +18,7 @@ class Graduate(DataModelable, Storable):
         self.__grade: int = 0
         self.__class: str = ""
         self.__college: str = ""
-        self.__major: Major = None
+        self.__major: Union[Major, None] = None
 
         # Graduate career information
         self.__gpa: float = 0
