@@ -1,12 +1,16 @@
+import typing
+from typing import TypeVar, Generic, Optional, Union, Dict, List
 from abc import abstractmethod
-from typing import Optional, Union, Dict, List
 
-from pure_object_oriented.ABCAndSingletonMeta import ABCAndSingletonMeta
 from data_storage.Storable import Storable
+from pure_object_oriented.ABCAndSingletonMeta import ABCAndSingletonMeta
 from data_storage.DataContainer import DataContainer
 
 
-class Pool(metaclass=ABCAndSingletonMeta):
+PoolType: typing = TypeVar('PoolType', bound=Storable)
+
+
+class Pool(Generic[PoolType], metaclass=ABCAndSingletonMeta):
     @abstractmethod
     def __str__(self) -> str:
         pass
@@ -23,9 +27,9 @@ class Pool(metaclass=ABCAndSingletonMeta):
     def remove_data(self, condition: Optional[Union[Dict[str, str], None]] = None) -> None:
         pass
 
-    def _find_data(self, data_pool: DataContainer, condition: Dict[str, str]) -> Dict[int, Storable]:
+    def _find_data(self, data_pool: DataContainer, condition: Dict[str, str]) -> Dict[int, PoolType]:
         index: int = 0
-        search_results: Dict[int, Storable] = {}
+        search_results: Dict[int, PoolType] = {}
 
         for data in data_pool:
             structured_data: Dict[str, str] = data.get_metadata()
