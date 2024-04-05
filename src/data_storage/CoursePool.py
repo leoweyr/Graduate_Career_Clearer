@@ -22,6 +22,9 @@ class CoursePool(Pool):
                  exc_tb: Optional[TracebackType]) -> None:
         self.__database.push(self.__courses)
 
+    def __str__(self) -> str:
+        return "course pool"
+
     def add_data(self, data: Storable) -> None:
         if data.is_indexable() and len(self._find_data(self.__courses, data.get_metadata())) == 0:
             self.__courses.append(data)

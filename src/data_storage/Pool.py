@@ -8,6 +8,10 @@ from data_storage.DataContainer import DataContainer
 
 class Pool(metaclass=ABCAndSingletonMeta):
     @abstractmethod
+    def __str__(self) -> str:
+        pass
+
+    @abstractmethod
     def add_data(self, data: Storable) -> None:
         pass
 
