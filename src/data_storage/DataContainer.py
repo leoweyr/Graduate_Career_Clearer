@@ -1,16 +1,20 @@
-from typing import List, Dict
+import typing
+from typing import TypeVar, Generic, List, Dict
 import copy
 
 from data_storage.Storable import Storable
 
 
-class DataContainer:
+DataContainerType: typing = TypeVar('DataContainerType', bound=Storable)
+
+
+class DataContainer(Generic[DataContainerType]):
     def __init__(self):
-        self.__container: List[Storable] = []
+        self.__container: List[DataContainerType] = []
         self.__metadata_tags: List[str] = []
 
-    def clone(self) -> 'DataContainer':
-        data_container_copy: DataContainer = copy.deepcopy(self)
+    def clone(self) -> 'DataContainer[DataContainerType]':
+        data_container_copy: DataContainer[DataContainerType] = copy.deepcopy(self)
 
         return data_container_copy
 
@@ -20,7 +24,7 @@ class DataContainer:
     def __len__(self) -> int:
         return len(self.__container)
 
-    def append(self, data: Storable) -> None:
+    def append(self, data: DataContainerType) -> None:
         data_metadata: Dict[str, str] = data.get_metadata()
         if len(self.__metadata_tags) == 0:
             self.__metadata_tags = list(data_metadata.keys())
