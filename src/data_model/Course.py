@@ -11,25 +11,35 @@ from pure_object_oriented.NoInheritMeta import NoInheritMeta
 
 class Course(DataModelable, Storable):
     def __init__(self, builder: Union['Course.Builder', Any]):
-        if isinstance(builder, Course.Builder):
-            self.__id: str = builder.outer_class_get_id()
-            self.__name: str = builder.outer_class_get_name()
-            self.__nature: CourseNature = builder.outer_class_get_nature()
-            self.__supplier: str = builder.outer_class_get_supplier()
-            self.__terms: int = builder.outer_class_get_terms()
-        else:
-            converted_object_data_keys: List[str] = dir(builder)
-            self_object_data_keys: List[str] = ["_Course__id", "_Course__name", "_Course__nature", "_Course__supplier",
-                                                "_Course__terms"]
+        self.__terms: int = 0
 
-            if not set(self_object_data_keys).issubset(set(converted_object_data_keys)):
+        # Metadata.
+        self.__id: str = ""
+        self.__name: str = ""
+        self.__nature: CourseNature = CourseNature.UNKNOWN
+        self.__supplier: str = ""
+
+        if isinstance(builder, Course.Builder):
+            self.__id = builder.outer_class_get_id()
+            self.__name = builder.outer_class_get_name()
+            self.__nature = builder.outer_class_get_nature()
+            self.__supplier = builder.outer_class_get_supplier()
+        else:
+            converted_object_members: List[str] = dir(builder)
+            self_object_members: List[str] = ["_Course__id",
+                                              "_Course__name",
+                                              "_Course__nature",
+                                              "_Course__supplier",
+                                              "_Course__terms"]
+
+            if not set(self_object_members).issubset(set(converted_object_members)):
                 raise TypeCastingError(builder, Course)
             else:
-                self.__id: str = getattr(builder, "_Course__id")
-                self.__name: str = getattr(builder, "_Course__name")
-                self.__nature: CourseNature = getattr(builder, "_Course__nature")
-                self.__supplier: str = getattr(builder, "_Course__supplier")
-                self.__terms: int = getattr(builder, "_Course__terms")
+                self.__id = getattr(builder, "_Course__id")
+                self.__name = getattr(builder, "_Course__name")
+                self.__nature = getattr(builder, "_Course__nature")
+                self.__supplier = getattr(builder, "_Course__supplier")
+                self.__terms = getattr(builder, "_Course__terms")
 
     def is_completed(self) -> bool:
         if self.__id == "":
@@ -79,13 +89,15 @@ class Course(DataModelable, Storable):
 
             return metadata
 
+    def set_terms(self, terms: int = 1) -> None:
+        self.__terms = terms
+
     class Builder(metaclass=NoInheritMeta):
         def __init__(self):
             self.__id: str = ""
             self.__name: str = ""
             self.__nature: CourseNature = CourseNature.UNKNOWN
             self.__supplier: str = ""
-            self.__terms: int = 0
 
         def id_(self, id_: str) -> 'Course.Builder':
             self.__id = id_
@@ -101,10 +113,6 @@ class Course(DataModelable, Storable):
 
         def supplier(self, supplier: str) -> 'Course.Builder':
             self.__supplier = supplier
-            return self
-
-        def terms(self, terms: int = 1) -> 'Course.Builder':
-            self.__terms = terms
             return self
 
         def build(self) -> 'Course':
@@ -137,10 +145,3 @@ class Course(DataModelable, Storable):
             specifically designed to address this issue. Furthermore, it cannot be invoked externally.
             """
             return self.__supplier
-
-        def outer_class_get_terms(self) -> int:
-            """
-            Due to Python's lack of support for outer class accessing private members of inner class, this method is
-            specifically designed to address this issue. Furthermore, it cannot be invoked externally.
-            """
-            return self.__terms
