@@ -40,3 +40,10 @@ class DataContainer(Generic[DataContainerType]):
         if len(self.__metadata_tags) == 0:
             raise RuntimeError("Data container is not populated with any data yet.")
         return self.__metadata_tags
+
+    def copy(self, data_container: 'DataContainer[DataContainerType]') -> None:
+        if isinstance(data_container, DataContainer):
+            self.__container = getattr(data_container, "_DataContainer__container")
+            self.__metadata_tags = getattr(data_container, "_DataContainer__metadata_tags")
+        else:
+            raise TypeError("The input parameter is not a DataContainer object.")

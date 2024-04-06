@@ -9,25 +9,32 @@ from data_storage.Storable import Storable
 
 
 class CoursePool(Pool[Course]):
-    def __init__(self, database: Databaseable):
-        self.__database: Databaseable = database
-        self.__courses: DataContainer = database.pull()
+    def __init__(self, database: Optional[Union[Databaseable, None]] = None):
+        self.__courses: DataContainer = DataContainer[Course]()
+        self.__database: Optional[Union[Databaseable, None]] = None
+        if database is not None:
+            self.__database = database
+            self.__database.set_data_container(self.__courses)
+            self.__database.pull()
 
     def __enter__(self) -> 'CoursePool':
+        if self.__database is not None:
+            self.__database.pull()
         return self
 
     def __exit__(self,
                  exc_type: Optional['BaseException'],
                  exc_val: Optional[BaseException],
                  exc_tb: Optional[TracebackType]) -> None:
-        self.__database.push(self.__courses)
+        if self.__database is not None:
+            self.__database.push()
 
     def __str__(self) -> str:
         return "course pool"
 
     def add_data(self, data: Storable) -> None:
         if data.is_indexable() and len(self._find_data(self.__courses, data.get_metadata())) == 0:
-            self.__courses.append(data)
+            self.__courses.append(Course(data))
 
     def get_data(self, condition: Optional[Union[Dict[str, str], None]] = None) -> List[Course]:
         search_results: Dict[int, Course] = dict(self._find_data(self.__courses, condition))

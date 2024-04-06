@@ -1,5 +1,5 @@
 import os.path
-from typing import List
+from typing import Union, List
 import pickle
 from datetime import datetime
 
@@ -15,6 +15,7 @@ class LocalDatabase(Databaseable):
             raise NotADirectoryError(f"The path <{path} is not a directory.")
 
         self.__path: str = path
+        self.__data_container: Union[DataContainer, None] = None
 
         # Initialize or retrieve metadata tags if it already exists.
         self.__metadata_tags: List[str] = []
@@ -24,24 +25,24 @@ class LocalDatabase(Databaseable):
             with open(metadata_tags_file_path, "rb") as metadata_tags_file:
                 self.__metadata_tags = pickle.load(metadata_tags_file)
 
-    def pull(self) -> DataContainer:
+    def set_data_container(self, data_container: DataContainer) -> None:
+        self.__data_container = data_container
+
+    def pull(self) -> None:
         if len(self.__metadata_tags) == 0:
-            return DataContainer()
+            return
         else:
             file_names: List[str] = os.listdir(self.__path)
             time_serial_numbers: List[int] = [int(name.split('.')[0]) for name in file_names
                                               if name.split('.')[0].isdigit()]
             last_time_serial_number: int = max(time_serial_numbers)
-            data: DataContainer = None
             data_file_name: str = str(last_time_serial_number) + ".db"
             data_file_path: str = os.path.join(self.__path, data_file_name)
             with open(data_file_path, "rb") as data_file:
-                data = pickle.load(data_file)
+                self.__data_container.copy(pickle.load(data_file))
 
-        return data
-
-    def push(self, data: DataContainer) -> None:
-        static_data: DataContainer = data.clone()
+    def push(self) -> None:
+        static_data: DataContainer = self.__data_container.clone()
         static_data_metadata_tags: List[str] = static_data.get_metadata_tags()
 
         if len(self.__metadata_tags) == 0:
