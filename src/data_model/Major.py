@@ -1,4 +1,4 @@
-from typing import Union, Any, List, Dict
+from typing import Union, Any, List, Dict, Optional
 
 from data_model.DataModelable import DataModelable
 from data_storage.Storable import Storable
@@ -99,6 +99,40 @@ class Major(DataModelable, Storable):
             }
 
             return metadata
+
+    def set_standard_major_optional_credits(self, standard_major_optional_credits: float) -> None:
+        self.__standard_major_optional_credits = standard_major_optional_credits
+
+    def set_standard_limited_elective_credits(self, standard_limited_elective_credits: float) -> None:
+        self.__standard_limited_elective_credits = standard_limited_elective_credits
+
+    def set_standard_optional_credits(self, standard_optional_credits: float) -> None:
+        self.__standard_optional_credits = standard_optional_credits
+
+    def add_standard_required_course(self, course: Course) -> None:
+        self.__standard_required_courses.append(course)
+
+    def remove_standard_required_course(self, condition: Optional[Union[Dict[str, str], None]] = None) -> None:
+        index: int = 0
+        removed_indices: List[int] = []
+
+        for course in self.__standard_required_courses:
+            course_metadata: Dict[str, str] = course.get_metadata()
+            matched: bool = True
+
+            if condition is not None:
+                for key, value in condition.items():
+                    if key not in course_metadata or course_metadata[key] != value:
+                        matched = False
+                        break
+
+            if matched or condition is None:
+                removed_indices.append(index)
+
+            index += 1
+
+        for index in removed_indices:
+            self.__standard_required_courses.pop(index)
 
     class Builder(metaclass=NoInheritMeta):
         def __init__(self):

@@ -8,10 +8,10 @@ from data_model.DataIncompleteError import DataIncompleteError
 
 
 class TakenCourse(DataModelable):
-    def __init__(self, course: Course, point_criterion: PointCriterion):
+    def __init__(self, course: Course, points: Any, point_criterion: PointCriterion):
         self.__course: Course = course
         self.__status: TakenCourseStatus = TakenCourseStatus.UNKNOWN
-        self.__points: Any = None
+        self.__points: Any = points
         self.__points_criterion: PointCriterion = point_criterion
 
     def is_completed(self) -> bool:

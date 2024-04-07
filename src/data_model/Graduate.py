@@ -1,4 +1,4 @@
-from typing import Union, Any, List, Dict
+from typing import Union, Any, List, Dict, Optional
 
 from data_model.DataModelable import DataModelable
 from data_storage.Storable import Storable
@@ -8,6 +8,10 @@ from data_model.TakenCourse import TakenCourse
 from data_model.TypeCastingError import TypeCastingError
 from data_model.DataIncompleteError import DataIncompleteError
 from data_storage.DataNotIndexableError import DataNotIndexableError
+from criterion.PointCriterion import PointCriterion
+from data_storage.CoursePool import CoursePool
+from data_model.Course import Course
+from data_storage.ObjectNotFoundError import ObjectNotFoundError
 from pure_object_oriented.NoInheritMeta import NoInheritMeta
 
 
@@ -150,6 +154,55 @@ class Graduate(DataModelable, Storable):
             }
 
             return metadata
+
+    def set_gpa(self, gpa: float) -> None:
+        self.__gpa = gpa
+
+    def set_required_credits(self, required_credits: float) -> None:
+        self.__required_credits = required_credits
+
+    def set_major_optional_credits(self, major_optional_credits: float) -> None:
+        self.__major_optional_credits = major_optional_credits
+
+    def set_limited_elective_credits(self, limited_elective_credits: float) -> None:
+        self.__limited_elective_credits = limited_elective_credits
+
+    def set_optional_credits(self, optional_credits: float) -> None:
+        self.__optional_credits = optional_credits
+
+    def add_taken_courses(self, course_metadata: Dict[str, str], points: Any, point_criterion: PointCriterion) -> None:
+        course_pool: CoursePool = CoursePool()
+        courses: List[Course] = course_pool.get_data(course_metadata)
+
+        if len(courses) == 0:
+            raise ObjectNotFoundError(course_pool, course_metadata)
+        elif len(courses) > 1:
+            ValueError(f"Input course_metadata <{course_metadata}> does not uniquely correspond to the single Course "
+                       f"object.")
+        else:
+            self.__taken_courses.append(TakenCourse(courses[0], points, point_criterion))
+
+    def remove_taken_courses(self, condition: Optional[Union[Dict[str, str], None]] = None) -> None:
+        index: int = 0
+        removed_indices: List[int] = []
+
+        for taken_course in self.__taken_courses:
+            course_metadata: Dict[str, str] = taken_course.get_data()["course"].get_metadata()
+            matched: bool = True
+
+            if condition is not None:
+                for key, value in condition.items():
+                    if key not in course_metadata or course_metadata[key] != value:
+                        matched = False
+                        break
+
+            if matched or condition is None:
+                removed_indices.append(index)
+
+            index += 1
+
+        for index in removed_indices:
+            self.__taken_courses.pop(index)
 
     class Builder(metaclass=NoInheritMeta):
         def __init__(self):
