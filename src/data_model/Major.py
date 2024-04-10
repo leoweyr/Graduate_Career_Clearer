@@ -4,6 +4,8 @@ from data_model.DataModelable import DataModelable
 from data_storage.Storable import Storable
 from data_model.Course import Course
 from data_model.TypeCastingError import TypeCastingError
+from data_storage.CoursePool import CoursePool
+from data_storage.ObjectNotFoundError import ObjectNotFoundError
 from data_model.DataIncompleteError import DataIncompleteError
 from data_storage.DataNotIndexableError import DataNotIndexableError
 from pure_object_oriented.NoInheritMeta import NoInheritMeta
@@ -48,6 +50,36 @@ class Major(DataModelable, Storable):
 
     def __str__(self) -> str:
         return self.__name
+
+    def __getstate__(self) -> Dict[str, Any]:
+        state: Dict[str, Any] = self.__dict__.copy()
+        static_standard_required_courses: List[Dict[str, str]] = []
+
+        for course in self.__standard_required_courses:
+            static_standard_required_courses.append(course.get_metadata())
+
+        state["_Major__standard_required_courses"] = static_standard_required_courses
+
+        return state
+
+    def __setstate__(self, state: Dict[str, Any]) -> None:
+        static_standard_required_courses: List[Dict[str, str]] = state["_Major__standard_required_courses"]
+        standard_required_courses: List[Course] = []
+
+        for course_metadata in static_standard_required_courses:
+            course_pool: CoursePool = CoursePool()
+            courses: List[Course] = course_pool.get_data(course_metadata)
+
+            if len(courses) == 0:
+                raise ObjectNotFoundError(course_pool, course_metadata)
+            elif len(courses) > 1:
+                ValueError(f"The single static course data <{course_metadata}> stored in deserialized Major object "
+                           f"does not correspond to the single Course object in the course pool.")
+            else:
+                standard_required_courses.append(courses[0])
+
+        state["_Major__standard_required_courses"] = standard_required_courses
+        self.__dict__.update(state)
 
     def is_completed(self) -> bool:
         if self.__id == 0:

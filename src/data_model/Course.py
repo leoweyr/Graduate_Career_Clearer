@@ -41,6 +41,12 @@ class Course(DataModelable, Storable):
                 self.__supplier = getattr(builder, "_Course__supplier")
                 self.__terms = getattr(builder, "_Course__terms")
 
+    def __getstate__(self) -> Dict[str, Any]:
+        return self.__dict__
+
+    def __setstate__(self, state: Dict[str, Any]) -> None:
+        self.__dict__.update(state)
+
     def is_completed(self) -> bool:
         if self.__id == "":
             raise DataIncompleteError(self, "id")

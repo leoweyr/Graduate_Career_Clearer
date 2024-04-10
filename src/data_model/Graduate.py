@@ -6,12 +6,13 @@ from data_model.Gender import Gender
 from data_model.Major import Major
 from data_model.TakenCourse import TakenCourse
 from data_model.TypeCastingError import TypeCastingError
+from data_storage.MajorPool import MajorPool
+from data_storage.ObjectNotFoundError import ObjectNotFoundError
 from data_model.DataIncompleteError import DataIncompleteError
 from data_storage.DataNotIndexableError import DataNotIndexableError
 from criterion.PointCriterion import PointCriterion
 from data_storage.CoursePool import CoursePool
 from data_model.Course import Course
-from data_storage.ObjectNotFoundError import ObjectNotFoundError
 from pure_object_oriented.NoInheritMeta import NoInheritMeta
 
 
@@ -74,6 +75,28 @@ class Graduate(DataModelable, Storable):
                 self.__limited_elective_credits = getattr(builder, "_Graduate__limited_elective_credits")
                 self.__optional_credits = getattr(builder, "_Graduate__optional_credits")
                 self.__taken_courses = getattr(builder, "_Graduate__taken_courses")
+
+    def __getstate__(self) -> Dict[str, Any]:
+        state: Dict[str, Any] = self.__dict__.copy()
+        static_major: Dict[str, str] = self.__major.get_metadata()
+        state["_Graduate__major"] = static_major
+
+        return state
+
+    def __setstate__(self, state: Dict[str, Any]) -> None:
+        static_major: Dict[str, str] = state["_Graduate__major"]
+        major_pool: MajorPool = MajorPool()
+        majors: List[Major] = major_pool.get_data(static_major)
+
+        if len(majors) == 0:
+            raise ObjectNotFoundError(major_pool, static_major)
+        elif len(majors) > 1:
+            ValueError(f"The single static major data <{static_major}> stored in deserialized Graduate object does "
+                       f"not correspond to the single Major object in the major pool.")
+        else:
+            state["_Graduate__major"] = majors[0]
+
+        self.__dict__.update(state)
 
     def is_completed(self) -> bool:
         if self.__id == 0:
