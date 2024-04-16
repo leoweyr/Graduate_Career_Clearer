@@ -7,6 +7,7 @@ from data_model.Course import Course
 from data_packer.DataTag import DataTag
 from data_packer.DataType import DataType
 from data_packer.DataPack import DataPack
+from data_packer.ExcelMissingDataError import ExcelMissingDataError
 from data_model.CourseNature import CourseNature
 from data_storage.CoursePool import CoursePool
 
@@ -30,6 +31,15 @@ class CourseExcelPacker(Executable):
             course_nature_data_tag,
             course_supplier_data_tag
         ])
+
+        if raw_data[0].content is None:
+            raise ExcelMissingDataError(self.__excel, raw_data[0])
+        elif raw_data[1].content is None:
+            raise ExcelMissingDataError(self.__excel, raw_data[1])
+        elif raw_data[2].content is None:
+            raise ExcelMissingDataError(self.__excel, raw_data[2])
+        elif raw_data[3].content is None:
+            raise ExcelMissingDataError(self.__excel, raw_data[3])
 
         # Process id in raw data.
         id_peeling_pattern: str = r'(.*?)(?:x|X|f|$)'
