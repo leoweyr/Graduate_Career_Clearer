@@ -2,9 +2,11 @@ from typing import Tuple, Dict, List
 import re
 
 from assembly_line.Executable import Executable
-from data_packer.Excel import Excel
+from data_packer.excel import Excel
 from data_model.Course import Course
+from data_packer.DataTag import DataTag
 from data_packer.DataType import DataType
+from data_packer.DataPack import DataPack
 from data_model.CourseNature import CourseNature
 from data_storage.CoursePool import CoursePool
 
@@ -18,22 +20,26 @@ class CourseExcelPacker(Executable):
         course_builder: Course.Builder = Course.Builder()
 
         # Get the raw data.
-        raw_data: Tuple[str, ...] = self.__excel.get_row_data(self.__data_index, {
-            "课程代码": DataType.STRING,
-            "课程名称": DataType.STRING,
-            "课程性质": DataType.STRING,
-            "开课学院": DataType.STRING
-        })
+        course_code_data_tag: DataTag = DataTag(["课程代码"], DataType.STRING)
+        course_name_data_tag: DataTag = DataTag(["课程名称"], DataType.STRING)
+        course_nature_data_tag: DataTag = DataTag(["课程性质"], DataType.STRING)
+        course_supplier_data_tag: DataTag = DataTag(["开课学院"], DataType.STRING)
+        raw_data: Tuple[DataPack, ...] = self.__excel.get_row_data(self.__data_index, [
+            course_code_data_tag,
+            course_name_data_tag,
+            course_nature_data_tag,
+            course_supplier_data_tag
+        ])
 
         # Process id in raw data.
         id_peeling_pattern: str = r'(.*?)(?:x|X|f|$)'
-        raw_data_id: str = raw_data[0]
+        raw_data_id: str = raw_data[0].content
         peeled_data_id: str = re.search(id_peeling_pattern, raw_data_id).group(1)
         course_builder.id_(peeled_data_id)
 
         # Process name in raw data.
         name_peeling_pattern: str = r'^(.*?)(?:\d+|(x|I|II|III).*)$'
-        raw_data_name: str = raw_data[1]
+        raw_data_name: str = raw_data[1].content
         peeled_data_name: str = ""
         name_peeling_matched: re.Match = re.search(name_peeling_pattern, raw_data_name)
         if name_peeling_matched:
@@ -43,7 +49,7 @@ class CourseExcelPacker(Executable):
         course_builder.name(peeled_data_name)
 
         # Process course nature in raw data.
-        raw_data_nature: str = raw_data[2]
+        raw_data_nature: str = raw_data[2].content
         course_nature: CourseNature = CourseNature.UNKNOWN
 
         if raw_data_nature == "必修":
@@ -58,7 +64,7 @@ class CourseExcelPacker(Executable):
         course_builder.nature(course_nature)
 
         # Process supplier in raw data.
-        raw_data_supplier: str = raw_data[3]
+        raw_data_supplier: str = raw_data[3].content
         course_builder.supplier(raw_data_supplier)
 
         # Create Course object containing only metadata by Course.Builder

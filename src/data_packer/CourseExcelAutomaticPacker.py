@@ -1,5 +1,5 @@
 from assembly_line.Pipeline import Pipeline
-from data_packer.Excel import Excel
+from data_packer.excel import Excel
 from data_packer.CourseExcelPacker import CourseExcelPacker
 from assembly_line.Executable import Executable
 
