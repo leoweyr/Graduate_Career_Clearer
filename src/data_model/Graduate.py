@@ -237,26 +237,33 @@ class Graduate(DataModelable, Storable):
             self.__college: str = ""
             self.__major: Union[Major, None] = None
 
-        def id_(self, id_: int) -> None:
+        def id_(self, id_: int) -> 'Graduate.Builder':
             self.__id = id_
+            return self
 
-        def name(self, name: str) -> None:
+        def name(self, name: str) -> 'Graduate.Builder':
             self.__name = name
+            return self
 
-        def gender(self, gender: Gender) -> None:
+        def gender(self, gender: Gender) -> 'Graduate.Builder':
             self.__gender = gender
+            return self
 
-        def grade(self, grade: int) -> None:
+        def grade(self, grade: int) -> 'Graduate.Builder':
             self.__grade = grade
+            return self
 
-        def class_(self, class_: str) -> None:
+        def class_(self, class_: str) -> 'Graduate.Builder':
             self.__class = class_
+            return self
 
-        def college(self, college: str) -> None:
+        def college(self, college: str) -> 'Graduate.Builder':
             self.__college = college
+            return self
 
-        def major(self, major: Major) -> None:
+        def major(self, major: Major) -> 'Graduate.Builder':
             self.__major = major
+            return self
 
         def build(self) -> 'Graduate':
             return Graduate(self)
