@@ -15,10 +15,9 @@ class PointCriterion(Evaluable):
         if target.is_completed():
             target_points: Any = target.get_data()["points"]
 
-            if isinstance(target_points, float):
-                if float(target_points) >= 60:
-                    return dict({"target": target, "is_pass": True})
-            elif isinstance(target_points, str):
+            try:
+                float(target_points)
+            except ValueError:
                 if str(target_points) == "及格":
                     return dict({"target": target, "is_pass": True})
                 elif str(target_points) == "良好":
@@ -27,7 +26,11 @@ class PointCriterion(Evaluable):
                     return dict({"target": target, "is_pass": True})
                 elif str(target_points) == "中等":
                     return dict({"target": target, "is_pass": True})
-            return dict({"target": target, "is_pass": False})
+            else:
+                if float(target_points) >= 60:
+                    return dict({"target": target, "is_pass": True})
+            finally:
+                return dict({"target": target, "is_pass": False})
 
     def _conclude(self, result: Dict[str, Any]) -> None:
         evaluated_target: TakenCourse = result["target"]
