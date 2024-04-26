@@ -1,3 +1,1 @@
-# Graduate Career Clear
-
-An automated data-processing tool helps college officers to review graduates' careers.
+![social_preview](/assets/social_preview.png)
