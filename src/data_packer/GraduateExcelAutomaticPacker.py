@@ -17,6 +17,5 @@ class GraduateExcelAutomaticPacker(Pipeline):
     def add_station(self, station: Executable) -> None:
         super().add_station(station)
 
-    @property
-    def completed_stage(self) -> float:
-        return super().completed_stage
+    def get_completion_percentage(self) -> float:
+        return super().get_completion_percentage()

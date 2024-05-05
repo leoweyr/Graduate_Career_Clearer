@@ -1,9 +1,10 @@
 from typing import List
 
 from assembly_line.Executable import Executable
+from assembly_line.Completable import Completable
 
 
-class Pipeline(Executable):
+class Pipeline(Executable, Completable):
     def __init__(self):
         self.__stations: List[Executable] = []
         self.__completed_stage: int = 0
@@ -16,6 +17,5 @@ class Pipeline(Executable):
     def add_station(self, station: Executable) -> None:
         self.__stations.append(station)
 
-    @property
-    def completed_stage(self) -> float:
+    def get_completion_percentage(self) -> float:
         return float(self.__completed_stage / len(self.__stations))
