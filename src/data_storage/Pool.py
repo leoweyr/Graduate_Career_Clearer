@@ -16,7 +16,11 @@ class Pool(Generic[PoolType], metaclass=ABCAndSingletonMeta):
         pass
 
     @abstractmethod
-    def add_data(self, data: Storable) -> None:
+    def add_data(self, data: Storable, force_replace: Optional[bool] = False) -> None:
+        """
+        Args:
+            force_replace: Whether to forcefully replace existing objects in the data pool with the same metadata. Defaults to False.
+        """
         pass
 
     @abstractmethod

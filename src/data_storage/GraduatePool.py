@@ -32,8 +32,19 @@ class GraduatePool(Pool[Graduate]):
     def __str__(self) -> str:
         return "graduate pool"
 
-    def add_data(self, data: Storable) -> None:
-        if data.is_indexable() and len(self._find_data(self.__graduates, data.get_metadata())) == 0:
+    def add_data(self, data: Storable, force_replace: Optional[bool] = False) -> None:
+        """
+        Args:
+            force_replace: Whether to forcefully replace existing objects in the data pool with the same metadata. Defaults to False.
+        """
+        if data.is_indexable():
+            if len(self._find_data(self.__graduates, data.get_metadata())) > 0:
+                if not force_replace:
+                    raise ValueError(f"Input object <{repr(Storable)}> conflicts with an existing object in the {self} "
+                                     f"with the same metadata.")
+                else:
+                    self.remove_data(data.get_metadata())
+
             self.__graduates.append(Graduate(data))
 
     def get_data(self, condition: Optional[Union[Dict[str, str], None]] = None) -> List[Graduate]:

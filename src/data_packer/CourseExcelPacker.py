@@ -100,9 +100,11 @@ class CourseExcelPacker(Executable):
         course_meta_data: Dict[str, str] = course.get_metadata()
         existing_same_courses_in_course_pool: List[Course] = course_pool.get_data(course_meta_data)
 
+        # Add or replace Course object to the course pool.
         if existing_same_courses_in_course_pool:
             if int(course.get_data()["terms"]) > int(existing_same_courses_in_course_pool[0].get_data()["terms"]):
                 course_pool.remove_data(course_meta_data)
+            else:
+                return
 
-        # Add Course object to the course pool.
         course_pool.add_data(course)
